@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ระบบงานกิจการนักเรียน โรงเรียนเสริมขวาวิทยา</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary:#9b1c1c; --primary-dark:#7f1d1d; --primary-light:#dc2626;
+  --accent:#f97316; --accent-light:#fff7ed;
+  --white:#fff; --gray-50:#f8fafc; --gray-100:#f1f5f9; --gray-200:#e2e8f0;
+  --gray-300:#cbd5e1; --gray-400:#94a3b8; --gray-500:#64748b;
+  --gray-600:#475569; --gray-700:#334155; --gray-800:#1e293b;
+  --success:#10b981; --danger:#ef4444; --info:#3b82f6;
+  --sidebar-w:272px; --header-h:66px;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.08);
+  --shadow-md:0 4px 12px rgba(0,0,0,.08);
+  --shadow-lg:0 10px 24px rgba(0,0,0,.1);
+  --shadow-xl:0 20px 40px rgba(0,0,0,.12);
+  --r:12px; --r-sm:8px; --r-lg:16px;
+  --tr:all .25s cubic-bezier(.4,0,.2,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Sarabun',sans-serif;background:var(--gray-50);color:var(--gray-800);min-height:100vh;display:flex;flex-direction:column}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,var(--primary-dark) 0%,var(--primary) 55%,var(--primary-light) 100%);height:var(--header-h);display:flex;align-items:center;padding:0 18px;position:fixed;top:0;left:0;right:0;z-index:1000;box-shadow:0 2px 20px rgba(127,29,29,.45);gap:12px}
+.header-logo{width:46px;height:46px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;border:2px solid rgba(255,255,255,.3)}
+.header-title{flex:1;min-width:0}
+.header-title h1{color:#fff;font-size:.95rem;font-weight:700;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.header-title p{color:rgba(255,255,255,.72);font-size:.72rem}
+.menu-toggle{display:none;background:none;border:none;color:#fff;font-size:22px;cursor:pointer;padding:7px 9px;border-radius:var(--r-sm);transition:var(--tr)}
+.menu-toggle:hover{background:rgba(255,255,255,.12)}
+
+/* LAYOUT */
+.layout{display:flex;margin-top:var(--header-h);min-height:calc(100vh - var(--header-h))}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar-w);background:#fff;border-right:1px solid var(--gray-200);position:fixed;top:var(--header-h);left:0;bottom:0;overflow-y:auto;z-index:900;transition:transform .3s ease;display:flex;flex-direction:column;scrollbar-width:thin;scrollbar-color:var(--gray-200) transparent}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-track{background:transparent}
+.sidebar::-webkit-scrollbar-thumb{background:var(--gray-200);border-radius:4px}
+.sidebar-sec{padding:14px 10px 6px}
+.sidebar-sec-title{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gray-400);padding:0 8px;margin-bottom:5px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:10px 13px;border-radius:var(--r-sm);cursor:pointer;color:var(--gray-600);font-size:.855rem;font-weight:500;transition:var(--tr);margin-bottom:2px;border:none;background:none;width:100%;text-align:left;font-family:'Sarabun',sans-serif}
+.nav-item:hover{background:var(--gray-100);color:var(--primary)}
+.nav-item.active{background:linear-gradient(135deg,#fee2e2,#fff1f2);color:var(--primary);font-weight:700}
+.nav-item.active .n-icon{background:var(--primary);color:#fff}
+.n-icon{width:32px;height:32px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px;background:var(--gray-100);flex-shrink:0;transition:var(--tr)}
+.sidebar-div{height:1px;background:var(--gray-200);margin:6px 10px}
+.sidebar-footer{margin-top:auto;padding:14px;border-top:1px solid var(--gray-200);text-align:center}
+.sidebar-footer p{font-size:.68rem;color:var(--gray-400);line-height:1.6}
+
+/* MAIN */
+.main{flex:1;margin-left:var(--sidebar-w);padding:22px}
+.page{display:none;animation:fadeUp .3s ease}
+.page.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* PAGE HEADER */
+.pg-header{background:#fff;border-radius:var(--r-lg);padding:22px 26px;margin-bottom:22px;box-shadow:var(--shadow-sm);border-left:5px solid var(--primary);display:flex;align-items:center;gap:16px}
+.pg-header-icon{width:54px;height:54px;background:linear-gradient(135deg,var(--primary),var(--primary-light));border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0}
+.pg-header-text h2{font-size:1.35rem;font-weight:700;color:var(--primary-dark)}
+.pg-header-text p{font-size:.82rem;color:var(--gray-500);margin-top:3px}
+
+/* CARDS */
+.card{background:#fff;border-radius:var(--r);box-shadow:var(--shadow-md);overflow:hidden;margin-bottom:20px}
+.card-head{padding:14px 18px;border-bottom:1px solid var(--gray-100);font-size:.9rem;font-weight:700;color:var(--gray-700);display:flex;align-items:center;gap:7px}
+.card-body{padding:18px}
+
+/* TABS */
+.tabs-wrap{background:#fff;border-radius:var(--r);box-shadow:var(--shadow-md);overflow:hidden;margin-bottom:20px}
+.tabs-nav{display:flex;border-bottom:2px solid var(--gray-200);background:var(--gray-50)}
+.tab-btn{flex:1;padding:13px 10px;border:none;background:none;cursor:pointer;font-family:'Sarabun',sans-serif;font-size:.855rem;font-weight:600;color:var(--gray-500);transition:var(--tr);border-bottom:3px solid transparent;margin-bottom:-2px}
+.tab-btn:hover{color:var(--primary);background:rgba(155,28,28,.05)}
+.tab-btn.active{color:var(--primary);background:#fff;border-bottom-color:var(--primary)}
+.tab-pane{display:none;padding:22px}
+.tab-pane.active{display:block;animation:fadeUp .2s ease}
+
+/* DRESS CODE */
+.dc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px}
+.dc-card{background:var(--gray-50);border-radius:var(--r-sm);overflow:hidden;border:1px solid var(--gray-200);transition:var(--tr)}
+.dc-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.dc-img{width:100%;aspect-ratio:3/4;background:linear-gradient(135deg,#fee2e2,#fff1f2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+.dc-img .placeholder-box{width:72px;height:72px;border:3px dashed var(--gray-300);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:30px;color:var(--primary-light)}
+.dc-img .img-hint{font-size:.65rem;color:var(--gray-400)}
+.dc-img img{width:100%;height:100%;object-fit:cover;object-position:top}
+.dc-info{padding:11px 13px}
+.dc-info h4{font-size:.82rem;font-weight:700;color:var(--primary-dark);margin-bottom:7px}
+.dc-info ul{list-style:none}
+.dc-info li{font-size:.75rem;color:var(--gray-600);padding:2px 0 2px 14px;position:relative}
+.dc-info li::before{content:'▸';position:absolute;left:0;color:var(--primary-light);font-size:.65rem;top:3px}
+
+/* PDF BUTTONS */
+.pdf-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:4px}
+.pdf-btn{display:flex;align-items:center;gap:13px;padding:16px 18px;background:#fff;border:2px solid var(--gray-200);border-radius:var(--r);cursor:pointer;text-decoration:none;color:var(--gray-700);transition:var(--tr);font-family:'Sarabun',sans-serif;font-size:.875rem;font-weight:600;box-shadow:var(--shadow-sm)}
+.pdf-btn:hover{border-color:var(--primary);color:var(--primary);box-shadow:0 4px 18px rgba(127,29,29,.16);transform:translateY(-2px)}
+.pdf-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.pdf-icon.red{background:linear-gradient(135deg,#fee2e2,#fca5a5)}
+.pdf-icon.blue{background:linear-gradient(135deg,#fee2e2,#fca5a5)}
+.pdf-icon.green{background:linear-gradient(135deg,#d1fae5,#6ee7b7)}
+.pdf-meta{font-size:.68rem;color:var(--gray-400);font-weight:400;display:block;margin-top:2px}
+
+/* NOTICE */
+.notice{background:var(--accent-light);border:1px solid #fed7aa;border-left:4px solid var(--accent);border-radius:var(--r-sm);padding:10px 14px;font-size:.8rem;color:#7c2d12;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+
+/* GRID HELPERS */
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:18px;margin-bottom:20px}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:20px}
+.g4{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:20px}
+
+/* STATS */
+.stat-card{background:#fff;border-radius:var(--r);padding:18px;text-align:center;box-shadow:var(--shadow-sm);border:1px solid var(--gray-100);transition:var(--tr)}
+.stat-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.stat-ico{font-size:30px;margin-bottom:6px}
+.stat-num{font-size:1.55rem;font-weight:800;color:var(--primary)}
+.stat-lbl{font-size:.72rem;color:var(--gray-400);margin-top:3px}
+
+/* SAFE INFO CARDS */
+.safe-card{background:#fff;border-radius:var(--r);padding:22px;box-shadow:var(--shadow-md);text-align:center;border-top:4px solid var(--primary);transition:var(--tr)}
+.safe-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-3px)}
+.safe-card .s-ico{font-size:44px;margin-bottom:10px}
+.safe-card h3{font-size:.95rem;font-weight:700;color:var(--primary-dark);margin-bottom:7px}
+.safe-card p{font-size:.8rem;color:var(--gray-500);line-height:1.65}
+
+/* PROFILE CARDS */
+.council-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:14px;margin-bottom:20px}
+.p-card{background:#fff;border-radius:var(--r);box-shadow:var(--shadow-md);overflow:hidden;text-align:center;transition:var(--tr)}
+.p-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-4px)}
+.p-card.president-card{border-top:4px solid var(--accent)}
+.p-img{width:100%;aspect-ratio:1;background:linear-gradient(135deg,#fee2e2,#fff1f2);display:flex;align-items:center;justify-content:center;font-size:44px;color:var(--primary-light);overflow:hidden;position:relative}
+.p-img img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.p-info{padding:11px 10px}
+.p-badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:.62rem;font-weight:700;margin-bottom:5px}
+.badge-president{background:linear-gradient(135deg,#fef3c7,#fde68a);color:#92400e}
+.badge-vice{background:linear-gradient(135deg,#fee2e2,#fca5a5);color:var(--primary-dark)}
+.badge-member{background:var(--gray-100);color:var(--gray-600)}
+.p-name{font-size:.8rem;font-weight:700;color:var(--gray-800);margin-bottom:2px}
+.p-pos{font-size:.72rem;color:var(--primary);font-weight:600;margin-bottom:2px}
+.p-cls{font-size:.68rem;color:var(--gray-400)}
+
+/* PRESIDENT HERO */
+.president-hero{display:flex;justify-content:center;margin-bottom:22px}
+.president-big{width:210px;background:#fff;border-radius:var(--r-lg);box-shadow:var(--shadow-lg);overflow:hidden;text-align:center;border-top:5px solid var(--accent);transition:var(--tr)}
+.president-big:hover{box-shadow:var(--shadow-xl);transform:translateY(-4px)}
+.president-big .p-img{height:170px;font-size:56px}
+.president-big .p-info{padding:16px}
+
+/* SECTION LABEL */
+.sec-label{font-size:.82rem;font-weight:700;color:var(--primary-dark);padding-bottom:10px;margin-bottom:14px;border-bottom:2px solid var(--gray-100);margin-top:20px;display:flex;align-items:center;gap:7px}
+.sec-label:first-child{margin-top:0}
+
+/* FEEDBACK BANNER */
+.fb-banner{background:linear-gradient(135deg,var(--primary),var(--primary-light));border-radius:var(--r);padding:22px 26px;display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px;box-shadow:var(--shadow-md)}
+.fb-banner h3{color:#fff;font-size:1.05rem;font-weight:700;margin-bottom:3px}
+.fb-banner p{color:rgba(255,255,255,.8);font-size:.8rem}
+.btn-fb{display:inline-flex;align-items:center;gap:7px;padding:11px 22px;background:var(--accent);color:#fff;border-radius:var(--r-sm);font-family:'Sarabun',sans-serif;font-size:.875rem;font-weight:700;cursor:pointer;border:none;text-decoration:none;transition:var(--tr);white-space:nowrap;box-shadow:0 4px 12px rgba(245,158,11,.4)}
+.btn-fb:hover{background:#d97706;transform:translateY(-2px);box-shadow:0 6px 16px rgba(245,158,11,.5)}
+
+/* GALLERY */
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:14px}
+.g-item{border-radius:var(--r-sm);overflow:hidden;background:var(--gray-200);aspect-ratio:4/3;position:relative;cursor:pointer;transition:var(--tr);box-shadow:var(--shadow-sm)}
+.g-item:hover{transform:scale(1.03);box-shadow:var(--shadow-lg)}
+.g-placeholder{width:100%;height:100%;background:linear-gradient(135deg,#fee2e2,#fff1f2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px}
+.g-placeholder .g-ico{font-size:30px;color:var(--primary-light)}
+.g-placeholder span{font-size:.68rem;color:var(--gray-400)}
+.g-item img{width:100%;height:100%;object-fit:cover;display:block;position:absolute;top:0;left:0}
+.g-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.65));padding:18px 10px 10px}
+.g-label{color:#fff;font-size:.72rem;font-weight:600}
+.g-vid-badge{position:absolute;top:8px;right:8px;background:#ef4444;color:#fff;border-radius:4px;padding:2px 8px;font-size:.62rem;font-weight:700}
+
+/* WHITE SCHOOL — REPORT BANNER */
+.report-banner{background:linear-gradient(135deg,#991b1b,#7f1d1d,#6b1111);border-radius:var(--r-lg);padding:28px 32px;text-align:center;margin-bottom:26px;box-shadow:0 8px 28px rgba(127,29,29,.35);position:relative;overflow:hidden}
+.report-banner::before{content:'🛡️';position:absolute;font-size:130px;opacity:.06;right:-10px;top:-10px;pointer-events:none}
+.report-banner h3{color:#fff;font-size:1.3rem;font-weight:800;margin-bottom:7px}
+.report-banner p{color:rgba(255,255,255,.85);font-size:.85rem;margin-bottom:20px;line-height:1.65}
+.btn-report{display:inline-flex;align-items:center;gap:9px;padding:13px 30px;background:#fff;color:#991b1b;border-radius:var(--r-sm);font-family:'Sarabun',sans-serif;font-size:.95rem;font-weight:800;cursor:pointer;border:none;text-decoration:none;transition:var(--tr);box-shadow:0 4px 14px rgba(0,0,0,.18)}
+.btn-report:hover{background:#fff1f2;transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.22)}
+
+/* EFILING */
+.efiling-group{background:#fff;border-radius:var(--r);box-shadow:var(--shadow-md);margin-bottom:18px;overflow:hidden}
+.ef-head{padding:15px 18px;display:flex;align-items:center;gap:11px}
+.ef-head.g1{background:linear-gradient(135deg,#7f1d1d,#b91c1c)}
+.ef-head.g2{background:linear-gradient(135deg,#065f46,#059669)}
+.ef-head.g3{background:linear-gradient(135deg,#7c2d12,#ea580c)}
+.ef-head.g4{background:linear-gradient(135deg,#581c87,#9333ea)}
+.ef-head.g5{background:linear-gradient(135deg,#0c4a6e,#0284c7)}
+.ef-ico{width:38px;height:38px;background:rgba(255,255,255,.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.ef-title{color:#fff}
+.ef-title h4{font-size:.92rem;font-weight:700}
+.ef-title p{font-size:.7rem;opacity:.8;margin-top:1px}
+.ef-body{padding:10px}
+.ef-item{display:flex;align-items:center;gap:11px;padding:9px 11px;border-radius:var(--r-sm);text-decoration:none;color:var(--gray-700);font-size:.83rem;transition:var(--tr);border:1px solid transparent}
+.ef-item:hover{background:var(--gray-50);border-color:var(--gray-200);color:var(--primary)}
+.ef-item:hover .ef-arr{color:var(--primary);transform:translateX(3px)}
+.ef-item-ico{width:34px;height:34px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.ic1{background:#fee2e2} .ic2{background:#d1fae5} .ic3{background:#ffedd5} .ic4{background:#f3e8ff} .ic5{background:#cffafe}
+.ef-item-txt{flex:1}
+.ef-item-txt strong{display:block;font-weight:600;margin-bottom:1px}
+.ef-item-txt span{font-size:.7rem;color:var(--gray-400)}
+.ef-arr{color:var(--gray-300);font-size:17px;flex-shrink:0;transition:var(--tr)}
+
+/* DASHBOARD LABEL */
+.dash-label{display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.dash-label h3{font-size:1.05rem;font-weight:700;color:var(--primary-dark)}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.68rem;font-weight:700}
+.badge-yellow{background:#fef3c7;color:#92400e}
+.badge-blue{background:#fee2e2;color:var(--primary)}
+.badge-green{background:#d1fae5;color:#065f46}
+.badge-red{background:#fee2e2;color:#991b1b}
+.badge-purple{background:#f3e8ff;color:#6b21a8}
+
+/* ===== BEHAVIOR PAGE ===== */
+.form-btn-banner{background:linear-gradient(135deg,var(--primary-dark) 0%,var(--primary) 55%,var(--primary-light) 100%);border-radius:var(--r-lg);padding:28px 32px;text-align:center;margin-bottom:24px;box-shadow:0 8px 26px rgba(127,29,29,.32);position:relative;overflow:hidden}
+.form-btn-banner::before{content:'📝';position:absolute;font-size:130px;opacity:.06;left:-15px;bottom:-20px;pointer-events:none}
+.form-btn-banner h3{color:#fff;font-size:1.2rem;font-weight:800;margin-bottom:7px}
+.form-btn-banner p{color:rgba(255,255,255,.85);font-size:.85rem;margin-bottom:20px;line-height:1.65}
+.btn-form{display:inline-flex;align-items:center;gap:10px;padding:13px 32px;background:#fff;color:var(--primary);border-radius:var(--r-sm);font-family:'Sarabun',sans-serif;font-size:1rem;font-weight:800;cursor:pointer;border:none;text-decoration:none;transition:var(--tr);box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.btn-form:hover{background:#fff1f2;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.2)}
+
+/* PODIUM */
+.podium-wrap{display:flex;align-items:flex-end;justify-content:center;gap:16px;padding:8px 0 4px}
+.podium-slot{display:flex;flex-direction:column;align-items:center}
+.podium-slot.rank-1{order:2;flex:0 0 185px}
+.podium-slot.rank-2{order:1;flex:0 0 155px}
+.podium-slot.rank-3{order:3;flex:0 0 155px}
+.podium-card{background:#fff;border-radius:var(--r);box-shadow:var(--shadow-md);overflow:hidden;width:100%;text-align:center;transition:var(--tr)}
+.podium-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-3px)}
+.rank-1 .podium-card{border-top:4px solid #f59e0b;box-shadow:0 6px 24px rgba(245,158,11,.2)}
+.rank-2 .podium-card{border-top:4px solid #94a3b8}
+.rank-3 .podium-card{border-top:4px solid #b45309}
+.podium-photo{width:100%;background:linear-gradient(135deg,#fee2e2,#fff1f2);display:flex;align-items:center;justify-content:center;font-size:38px;color:var(--primary-light);overflow:hidden;position:relative}
+.rank-1 .podium-photo{height:115px;font-size:50px}
+.rank-2 .podium-photo,.rank-3 .podium-photo{height:88px}
+.podium-photo img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.podium-info{padding:11px 8px 10px}
+.podium-crown{font-size:20px;display:block;margin-bottom:4px}
+.rank-1 .podium-crown{font-size:26px}
+.podium-rank-badge{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;font-size:.7rem;font-weight:800;margin-bottom:5px;color:#fff}
+.rank-1 .podium-rank-badge{background:linear-gradient(135deg,#fbbf24,#f59e0b);width:30px;height:30px;font-size:.8rem}
+.rank-2 .podium-rank-badge{background:#94a3b8}
+.rank-3 .podium-rank-badge{background:#b45309}
+.podium-name{font-size:.8rem;font-weight:700;color:var(--gray-800);margin-bottom:2px}
+.rank-1 .podium-name{font-size:.88rem}
+.podium-class{font-size:.68rem;color:var(--gray-400);margin-bottom:8px}
+.podium-score{display:inline-block;padding:4px 12px;background:var(--primary);color:#fff;border-radius:20px;font-size:.78rem;font-weight:800}
+.rank-1 .podium-score{background:linear-gradient(135deg,var(--primary),var(--primary-light));padding:5px 16px;font-size:.84rem}
+.podium-base{height:8px;width:100%;margin-top:8px}
+.rank-1 .podium-base{background:linear-gradient(90deg,#fbbf24,#f59e0b);height:11px}
+.rank-2 .podium-base{background:#94a3b8}
+.rank-3 .podium-base{background:#b45309}
+
+/* BEHAVIOR FEED */
+.feed-list{display:flex;flex-direction:column;gap:9px}
+.feed-item{display:flex;align-items:center;gap:12px;padding:12px 14px;background:#fff;border-radius:var(--r-sm);border:1px solid var(--gray-100);box-shadow:var(--shadow-sm);transition:var(--tr)}
+.feed-item:hover{border-color:var(--gray-200);box-shadow:var(--shadow-md)}
+.feed-anon{width:38px;height:38px;background:var(--gray-100);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.feed-content{flex:1;min-width:0}
+.feed-behavior{font-size:.855rem;font-weight:600;color:var(--gray-800);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.feed-meta{font-size:.7rem;color:var(--gray-400)}
+.feed-score{font-size:.88rem;font-weight:800;color:#dc2626;flex-shrink:0;background:#fee2e2;padding:4px 10px;border-radius:6px;white-space:nowrap}
+.feed-score.pos{color:#16a34a;background:#dcfce7}
+.feed-loading{text-align:center;padding:32px;color:var(--gray-400);font-size:.85rem}
+.feed-empty{text-align:center;padding:28px 16px;color:var(--gray-500)}
+.feed-empty .ei{font-size:36px;margin-bottom:8px;display:block}
+.config-tip{background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #f59e0b;border-radius:var(--r-sm);padding:11px 14px;font-size:.78rem;color:#92400e;margin-bottom:14px;line-height:1.75}
+.config-tip code{background:#fef3c7;padding:1px 5px;border-radius:3px;font-family:monospace;font-size:.8rem}
+.sheet-refresh{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.btn-refresh{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border:1.5px solid var(--gray-200);border-radius:6px;background:#fff;cursor:pointer;font-family:'Sarabun',sans-serif;font-size:.78rem;font-weight:600;color:var(--gray-600);transition:var(--tr)}
+.btn-refresh:hover{border-color:var(--primary);color:var(--primary)}
+@media(max-width:600px){
+  .podium-wrap{flex-direction:column;align-items:center;gap:12px}
+  .podium-slot.rank-1,.podium-slot.rank-2,.podium-slot.rank-3{order:0 !important;flex:0 0 auto;width:220px}
+  .rank-1 .podium-photo{height:100px}
+}
+
+/* OVERLAY */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:800}
+.overlay.show{display:block}
+
+/* UTILS */
+.mt4{margin-top:16px} .mt6{margin-top:24px} .mb4{margin-bottom:16px} .mb6{margin-bottom:24px}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .menu-toggle{display:flex}
+  .sidebar{transform:translateX(-100%);z-index:950;box-shadow:var(--shadow-xl)}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0;padding:14px}
+  .header-title h1{font-size:.82rem}
+  .pg-header{padding:14px 16px;gap:11px}
+  .pg-header-icon{width:44px;height:44px;font-size:21px}
+  .pg-header-text h2{font-size:1.1rem}
+  .tabs-nav{flex-direction:column}
+  .tab-btn{border-bottom:none;border-left:3px solid transparent;margin-bottom:0;text-align:left;padding:11px 14px}
+  .tab-btn.active{border-left-color:var(--primary);border-bottom-color:transparent}
+  .fb-banner{flex-direction:column;text-align:center}
+  .gallery-grid{grid-template-columns:repeat(2,1fr)}
+  .president-big{width:185px}
+}
+@media(max-width:480px){
+  .dc-grid{grid-template-columns:repeat(2,1fr)}
+  .council-grid{grid-template-columns:repeat(2,1fr)}
+  .gallery-grid{grid-template-columns:1fr}
+  .g4{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <button class="menu-toggle" id="menuToggle">☰</button>
+  <div class="header-logo">🏫</div>
+  <div class="header-title">
+    <h1>ระบบงานกิจการนักเรียน โรงเรียนเสริมขวาวิทยา</h1>
+    <p>สำนักงานเขตพื้นที่การศึกษาประถมศึกษาลำปาง เขต 2</p>
+  </div>
+</header>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-sec">
+    <div class="sidebar-sec-title">หมวดงานหลัก</div>
+    <button class="nav-item active" data-page="p1">
+      <span class="n-icon">📋</span>คู่มือและระเบียบต่างๆ
+    </button>
+    <button class="nav-item" data-page="p2">
+      <span class="n-icon">🛡️</span>สถานศึกษาปลอดภัย
+    </button>
+    <button class="nav-item" data-page="p3">
+      <span class="n-icon">👥</span>สภานักเรียน
+    </button>
+    <button class="nav-item" data-page="p4">
+      <span class="n-icon">⚪</span>สถานศึกษาสีขาว
+    </button>
+    <button class="nav-item" data-page="p5">
+      <span class="n-icon">📝</span>บันทึกพฤติกรรมนักเรียน
+    </button>
+  </div>
+  <div class="sidebar-div"></div>
+  <div class="sidebar-sec">
+    <div class="sidebar-sec-title">ลิงก์ด่วน</div>
+    <button class="nav-item" onclick="window.open('#','_blank')">
+      <span class="n-icon">📊</span>Google Classroom
+    </button>
+    <button class="nav-item" onclick="window.open('#','_blank')">
+      <span class="n-icon">📁</span>Google Drive
+    </button>
+    <button class="nav-item" onclick="window.open('#','_blank')">
+      <span class="n-icon">📅</span>ปฏิทินกิจกรรม
+    </button>
+  </div>
+  <div class="sidebar-footer">
+    <p>© 2568 งานกิจการนักเรียน<br>โรงเรียนเสริมขวาวิทยา</p>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+<!-- ========== PAGE 1: คู่มือและระเบียบ ========== -->
+<div class="page active" id="p1">
+  <div class="pg-header">
+    <div class="pg-header-icon">📋</div>
+    <div class="pg-header-text">
+      <h2>คู่มือและระเบียบต่างๆ</h2>
+      <p>ระเบียบการแต่งกาย ทรงผม และเอกสารคู่มือปฏิบัติงานกิจการนักเรียน</p>
+    </div>
+  </div>
+
+  <!-- PDF Buttons -->
+  <div class="card">
+    <div class="card-head">📄 เอกสารคู่มือสำคัญ</div>
+    <div class="card-body">
+      <div class="pdf-grid">
+        <a href="#" class="pdf-btn" onclick="return false">
+          <div class="pdf-icon red">📕</div>
+          <div>คู่มือการปฏิบัติงานกิจการนักเรียน<span class="pdf-meta">คลิกเพื่อดาวน์โหลด PDF</span></div>
+        </a>
+        <a href="#" class="pdf-btn" onclick="return false">
+          <div class="pdf-icon blue">📗</div>
+          <div>ระเบียบกิจการนักเรียน<span class="pdf-meta">คลิกเพื่อดาวน์โหลด PDF</span></div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dress Code Tabs -->
+  <div class="tabs-wrap">
+    <div class="tabs-nav">
+      <button class="tab-btn active" data-tab="t-kg">👶 ระดับอนุบาล</button>
+      <button class="tab-btn" data-tab="t-pri">🎒 ป.1 – ป.6</button>
+      <button class="tab-btn" data-tab="t-sec">📚 ม.1 – ม.3</button>
+    </div>
+
+    <!-- อนุบาล -->
+    <div class="tab-pane active" id="t-kg">
+      <div class="notice">⚠️ ระเบียบการแต่งกายและทรงผม นักเรียนระดับอนุบาล โรงเรียนเสริมขวาวิทยา</div>
+      <div class="dc-grid">
+        <div class="dc-card">
+          <div class="dc-img"><div class="placeholder-box">👦</div><span class="img-hint">ใส่รูปชุดนักเรียนชาย</span></div>
+          <div class="dc-info"><h4>ชุดนักเรียนชาย</h4><ul><li>เสื้อขาวแขนสั้น</li><li>กางเกงสีกรมขาสั้น</li><li>รองเท้าหนังสีดำ</li><li>ถุงเท้าสีขาว</li></ul></div>
+        </div>
+        <div class="dc-card">
+          <div class="dc-img"><div class="placeholder-box">👧</div><span class="img-hint">ใส่รูปชุดนักเรียนหญิง</span></div>
+          <div class="dc-info"><h4>ชุดนักเรียนหญิง</h4><ul><li>เสื้อขาวแขนสั้น</li><li>กระโปรงสีกรมจีบ</li><li>รองเท้าหนังสีดำ</li><li>ถุงเท้าสีขาว</li></ul></div>
+        </div>
+        <div class="dc-card">
+          <div class="dc-img"><div class="placeholder-box">✂️</div><span class="img-hint">ใส่รูปทรงผม</span></div>
+          <div class="dc-info"><h4>ระเบียบทรงผม</h4><ul><li>ผมสั้น สะอาด เรียบร้อย</li><li>ไม่ย้อมสี</li><li>ไม่เจลผม</li><li>ตามระเบียบโรงเรียน</li></ul></div>
+        </div>
+        <div class="dc-card">
+          <div class="dc-img"><div class="placeholder-box">👕</div><span class="img-hint">ใส่รูปชุดพลศึกษา</span></div>
+          <div class="dc-info"><h4>ชุดพลศึกษา</h4><ul><li>เสื้อสีตามระเบียบ</li><li>กางเกง/กระโปรงกีฬา</li><li>รองเท้าผ้าใบสีขาว</li><li>สวมตามวันที่กำหนด</li></ul></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ป.1-ป.6 -->
+    <div class="tab-pane" id="t-pri">
+      <div class="notice">⚠️ ระเบียบการแต่งกายและทรงผม นักเรียนระดับประถมศึกษา (ป.1 – ป.6) โรงเรียนเสริมขวาวิทยา</div>
+      <div class="dc-grid">
+        <div class="dc-card">
+          <div class="dc-img"><img src="https://i.postimg.cc/R0dkKWZb/be6cdc34-8c96-4ab0-a9fc-609d943be8c6.jpg" alt="ชุดนักเรียนชาย ป.1–ป.6"></div>
+          <div class="dc-info"><h4>ชุดนักเรียนชาย ป.1–ป.6</h4><ul><li>เสื้อขาวแขนสั้น</li><li>กางเกงสีกรมขาสั้น</li><li>เข็มขัดหนังสีดำ</li><li>รองเท้าหนังสีดำ</li><li>ถุงเท้าสีขาว</li></ul></div>
+        </div>
+        <div class="dc-card">
+          <div class="dc-img"><img src="https://i.postimg.cc/zBVqfCF6/1c9e7175-56a7-4fd5-b0b1-84ef1932dda6.jpg" alt="ชุดนักเรียนหญิง ป.1–ป.6"></div>
+          <div class="dc-info"><h4>ชุดนักเรียนหญิง ป.1–ป.6</h4><ul><li>เสื้อขาวแขนสั้น</li><li>กระโปรงสีกรมจีบ</li><li>รองเท้าหนังสีดำ</li><li>ถุงเท้าสีขาว</li><li>ผ้าโบว์สีขาว (ถ้ามี)</li></ul></div>
+        </div>
+        <div class="dc-card">
+          <div class="dc-img"><img src="https://i.postimg.cc/XNLrqL3n/5c89db7b-8a15-4c5b-8edb-e43b87f5f6dc.jpg" alt="ทรงผมชาย ป.1–ป.6"></div>
+          <div class="dc-info"><h4>ทรงผมชาย</h4><ul><li>ตัดสั้นข้างและหลัง</li><li>ด้านบนไม่เกิน 5 ซม.</li><li>ไม่ย้อมสี ไม่ดัด</li><li>สะอาดเป็นระเบียบ</li></ul></div>
+        </div>
+        <div class="dc-card">
+          <div class="dc-img"><img src="https://i.postimg.cc/Y0Pkghbx/d518b707-42ba-4bf9-aa41-524439740446.jpg" alt="ทรงผมหญิง ป.1–ป.6"></div>
+          <div class="dc-info"><h4>ทรงผมหญิง</h4><ul><li>ผมสั้นหรือมัดรวบ</li><li>ไม่ย้อมสี</li><li>กิ๊บ/ยางสีดำหรือน้ำตาล</li><li>สะอาดเรียบร้อย</li></ul></div>
+        </div>
+        <div class="dc-card">
+          <div class="dc-img"><div class="placeholder-box">🧥</div><span class="img-hint">ใส่รูปชุดลูกเสือ</span></div>
+          <div class="dc-info"><h4>ชุดลูกเสือ/เนตรนารี</h4><ul><li>สวมตามวันที่กำหนด</li><li>ครบชุดตามระเบียบ</li><li>รองเท้าหนังสีดำ</li><li>ถุงเท้าสีกากี</li></ul></div>
+        </div>
+        <div class="dc-card">
+          <div class="dc-img"><img src="https://i.postimg.cc/59Tm7fYJ/Gemini-Generated-Image-lbm9hmlbm9hmlbm9.png" alt="ข้อห้ามเด็ดขาด"></div>
+          <div class="dc-info"><h4>ข้อห้ามเด็ดขาด</h4><ul><li>ห้ามย้อมสีผม</li><li>ห้ามทาเล็บ/แต่งหน้า</li><li>ห้ามสวมเครื่องประดับ</li><li>ห้ามสักลาย</li></ul></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ม.1-ม.3 -->
+    <div class="tab-pane" id="t-sec">
+      <div class="notice">⚠️ ระเบียบการแต่งกายและทรงผม นักเรียนระดับมัธยมศึกษาตอนต้น (ม.1 – ม.3) โรงเรียนเสริมขวาวิทยา</div>
+      <div class="dc-grid">
+        <div class="dc-card">
+          <div class="dc-img"><div class="placeholder-box">👦</div><span class="img-hint">ใส่รูปชุดนักเรียนชาย</span></div>
+          <div class="dc-info"><h4>ชุดนักเรียนชาย ม.ต้น</h4><ul><li>เสื้อขาวแขนสั้น คอปก</li><li>กางเกงสีกรมขายาว</li><li>เข็มขัดหนังสีดำ</li><li>รองเท้าหนังสีดำ</li><li>ถุงเท้าสีขาว</li></ul></div>
+        </div>
+        <div class="dc-card">
+          <div class="dc-img"><div class="placeholder-box">👧</div><span class="img-hint">ใส่รูปชุดนักเรียนหญิง</span></div>
+          <div class="dc-info"><h4>ชุดนักเรียนหญิง ม.ต้น</h4><ul><li>เสื้อขาวแขนสั้น คอปก</li><li>กระโปรงสีกรมจีบ</li><li>ความยาวคลุมเข่า</li><li>รองเท้าหนังสีดำ</li><li>ถุงเท้าสีขาว</li></ul></div>
+        </div>
+        <div class="dc-card">
+          <div class="dc-img"><div class="placeholder-box">✂️</div><span class="img-hint">ใส่รูปทรงผมชาย</span></div>
+          <div class="dc-info"><h4>ทรงผมชาย ม.ต้น</h4><ul><li>ตัดสั้นรอบข้างและหลัง</li><li>ด้านบนไม่เกิน 5 ซม.</li><li>ไม่ย้อม ไม่ดัด ไม่ไว้ฟอง</li><li>สะอาดเรียบร้อย</li></ul></div>
+        </div>
+        <div class="dc-card">
+          <div class="dc-img"><div class="placeholder-box">💇</div><span class="img-hint">ใส่รูปทรงผมหญิง</span></div>
+          <div class="dc-info"><h4>ทรงผมหญิง ม.ต้น</h4><ul><li>ผมสั้นหรือมัดรวบ</li><li>ไม่ย้อมสี ไม่ดัดลอน</li><li>ที่มัดผมสีดำ/น้ำตาล</li><li>เรียบร้อยตามระเบียบ</li></ul></div>
+        </div>
+        <div class="dc-card">
+          <div class="dc-img"><div class="placeholder-box">🧥</div><span class="img-hint">ใส่รูปชุดลูกเสือ</span></div>
+          <div class="dc-info"><h4>ชุดลูกเสือ/เนตรนารี</h4><ul><li>สวมตามวันที่กำหนด</li><li>ครบอุปกรณ์ตามระเบียบ</li><li>รองเท้าหนังสีดำ</li><li>ถุงเท้าสีกากี</li></ul></div>
+        </div>
+        <div class="dc-card">
+          <div class="dc-img"><div class="placeholder-box">🚫</div><span class="img-hint">ใส่รูปข้อห้าม</span></div>
+          <div class="dc-info"><h4>ข้อห้ามเด็ดขาด</h4><ul><li>ห้ามสักลาย</li><li>ห้ามเจาะร่างกาย</li><li>ห้ามทาเล็บ/แต่งหน้า</li><li>ห้ามสวมเครื่องประดับ</li></ul></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PAGE 2: สถานศึกษาปลอดภัย ========== -->
+<div class="page" id="p2">
+  <div class="pg-header">
+    <div class="pg-header-icon">🛡️</div>
+    <div class="pg-header-text">
+      <h2>สถานศึกษาปลอดภัย</h2>
+      <p>แผนเผชิญเหตุและคู่มือการดำเนินงานสถานศึกษาปลอดภัย</p>
+    </div>
+  </div>
+
+  <div class="g4">
+    <div class="stat-card"><div class="stat-ico">🔥</div><div class="stat-num">5</div><div class="stat-lbl">แผนเผชิญเหตุ</div></div>
+    <div class="stat-card"><div class="stat-ico">🚨</div><div class="stat-num">1</div><div class="stat-lbl">จุดรวมพล</div></div>
+    <div class="stat-card"><div class="stat-ico">🧯</div><div class="stat-num">12</div><div class="stat-lbl">ถังดับเพลิง</div></div>
+    <div class="stat-card"><div class="stat-ico">📞</div><div class="stat-num">24/7</div><div class="stat-lbl">พร้อมรับเหตุ</div></div>
+  </div>
+
+  <div class="g2">
+    <div class="safe-card"><div class="s-ico">🚒</div><h3>แผนเผชิญเหตุอัคคีภัย</h3><p>เส้นทางหนีไฟ จุดรวมพล และขั้นตอนการปฏิบัติเมื่อเกิดเหตุไฟไหม้ภายในสถานศึกษา</p></div>
+    <div class="safe-card"><div class="s-ico">🌊</div><h3>แผนรับมืออุทกภัย</h3><p>แนวทางการอพยพและการปฏิบัติตนเมื่อเกิดน้ำท่วม พายุ หรือภัยพิบัติทางธรรมชาติ</p></div>
+    <div class="safe-card"><div class="s-ico">⚕️</div><h3>การปฐมพยาบาลเบื้องต้น</h3><p>ขั้นตอนการปฐมพยาบาล รายชื่อผู้รับผิดชอบ และเบอร์โทรฉุกเฉินภายในโรงเรียน</p></div>
+    <div class="safe-card"><div class="s-ico">🔒</div><h3>ความปลอดภัยทางไซเบอร์</h3><p>แนวทางการใช้อินเทอร์เน็ตอย่างปลอดภัย การป้องกันภัยออนไลน์สำหรับนักเรียน</p></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">📄 เอกสารสำคัญ — สถานศึกษาปลอดภัย</div>
+    <div class="card-body">
+      <div class="pdf-grid">
+        <a href="https://drive.google.com/file/d/1gEBS_SXS9FVpOLq3G5-gV6xGieyeXXab/view?usp=sharing" class="pdf-btn" target="_blank">
+  <div class="pdf-icon red">🗺️</div>
+  <div>แผนเผชิญเหตุอัคคีภัย (Emergency Plan)<span class="pdf-meta">คลิกเพื่อดาวน์โหลด PDF</span></div>
+</a>
+
+<a href="https://drive.google.com/file/d/1d14Sy-LM-5Pr2FrC3FtIn9eP85a_DPzz/view?usp=sharing" class="pdf-btn" target="_blank">
+  <div class="pdf-icon green">📗</div>
+  <div>คู่มือการดำเนินงานสถานศึกษาปลอดภัย<span class="pdf-meta">คลิกเพื่อดาวน์โหลด PDF</span></div>
+</a>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PAGE 3: สภานักเรียน ========== -->
+<div class="page" id="p3">
+  <div class="pg-header">
+    <div class="pg-header-icon">👥</div>
+    <div class="pg-header-text">
+      <h2>สภานักเรียน</h2>
+      <p>ทำเนียบสภานักเรียน ระเบียบ กิจกรรม และช่องทางการมีส่วนร่วม</p>
+    </div>
+  </div>
+
+  <!-- Feedback Banner -->
+  <div class="fb-banner">
+    <div>
+      <h3>💬 กล่องรับฟังความคิดเห็น</h3>
+      <p>นักเรียนสามารถเสนอแนะ ร้องเรียน หรือแสดงความคิดเห็นต่อสภานักเรียนได้ตลอดเวลา</p>
+    </div>
+    <a href="#" class="btn-fb" onclick="return false">💬 แสดงความคิดเห็น</a>
+  </div>
+
+  <!-- Council Directory -->
+  <div class="card">
+    <div class="card-head">🏆 ทำเนียบสภานักเรียน ปีการศึกษา 2568</div>
+    <div class="card-body">
+      <div class="sec-label">👑 ประธานสภานักเรียน</div>
+      <div class="president-hero">
+        <div class="president-big">
+          <div class="p-img">👤</div>
+          <div class="p-info">
+            <span class="p-badge badge-president">ประธานสภานักเรียน</span>
+            <div class="p-name">เด็กชายวัชรคุณ ใจอ้าย</div>
+            <div class="p-pos">ประธานสภานักเรียน</div>
+            <div class="p-cls">ชั้น ม.3</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sec-label">⭐ รองประธานและฝ่ายบริหาร</div>
+      <div class="council-grid">
+        <div class="p-card">
+          <div class="p-img">👤</div>
+          <div class="p-info"><span class="p-badge badge-vice">รองประธาน</span><div class="p-name">นาย/นาง............</div><div class="p-pos">รองประธาน คนที่ 1</div><div class="p-cls">ชั้น ม.3</div></div>
+        </div>
+        <div class="p-card">
+          <div class="p-img">👤</div>
+          <div class="p-info"><span class="p-badge badge-vice">รองประธาน</span><div class="p-name">นาย/นาง............</div><div class="p-pos">รองประธาน คนที่ 2</div><div class="p-cls">ชั้น ม.2</div></div>
+        </div>
+        <div class="p-card">
+          <div class="p-img">👤</div>
+          <div class="p-info"><span class="p-badge badge-member">เลขานุการ</span><div class="p-name">นาย/นาง............</div><div class="p-pos">เลขานุการ</div><div class="p-cls">ชั้น ม.3</div></div>
+        </div>
+        <div class="p-card">
+          <div class="p-img">👤</div>
+          <div class="p-info"><span class="p-badge badge-member">เหรัญญิก</span><div class="p-name">นาย/นาง............</div><div class="p-pos">เหรัญญิก</div><div class="p-cls">ชั้น ม.2</div></div>
+        </div>
+      </div>
+
+      <div class="sec-label">👤 คณะกรรมการสภานักเรียน</div>
+      <div class="council-grid">
+        <div class="p-card"><div class="p-img">👤</div><div class="p-info"><span class="p-badge badge-member">กรรมการ</span><div class="p-name">นาย/นาง............</div><div class="p-pos">ฝ่ายปกครอง</div><div class="p-cls">ชั้น ม.3</div></div></div>
+        <div class="p-card"><div class="p-img">👤</div><div class="p-info"><span class="p-badge badge-member">กรรมการ</span><div class="p-name">นาย/นาง............</div><div class="p-pos">ฝ่ายวิชาการ</div><div class="p-cls">ชั้น ม.2</div></div></div>
+        <div class="p-card"><div class="p-img">👤</div><div class="p-info"><span class="p-badge badge-member">กรรมการ</span><div class="p-name">นาย/นาง............</div><div class="p-pos">ฝ่ายกิจกรรม</div><div class="p-cls">ชั้น ม.1</div></div></div>
+        <div class="p-card"><div class="p-img">👤</div><div class="p-info"><span class="p-badge badge-member">กรรมการ</span><div class="p-name">นาย/นาง............</div><div class="p-pos">ฝ่ายประชาสัมพันธ์</div><div class="p-cls">ชั้น ม.2</div></div></div>
+        <div class="p-card"><div class="p-img">👤</div><div class="p-info"><span class="p-badge badge-member">กรรมการ</span><div class="p-name">นาย/นาง............</div><div class="p-pos">ฝ่ายสุขภาพ</div><div class="p-cls">ชั้น ม.3</div></div></div>
+        <div class="p-card"><div class="p-img">👤</div><div class="p-info"><span class="p-badge badge-member">กรรมการ</span><div class="p-name">นาย/นาง............</div><div class="p-pos">ฝ่ายสิ่งแวดล้อม</div><div class="p-cls">ชั้น ม.1</div></div></div>
+        <div class="p-card"><div class="p-img">👤</div><div class="p-info"><span class="p-badge badge-member">กรรมการ</span><div class="p-name">นาย/นาง............</div><div class="p-pos">ผู้ช่วยเลขานุการ</div><div class="p-cls">ชั้น ม.2</div></div></div>
+        <div class="p-card"><div class="p-img">👤</div><div class="p-info"><span class="p-badge badge-member">กรรมการ</span><div class="p-name">นาย/นาง............</div><div class="p-pos">ผู้ช่วยเหรัญญิก</div><div class="p-cls">ชั้น ม.1</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Regulation PDF -->
+  <div class="card">
+    <div class="card-head">📄 ระเบียบสภานักเรียน</div>
+    <div class="card-body">
+      <p style="font-size:.83rem;color:var(--gray-500);margin-bottom:14px;line-height:1.7">ระเบียบว่าด้วยสภานักเรียน กำหนดบทบาท หน้าที่ และแนวทางการบริหารงานสภานักเรียนโรงเรียนเสริมขวาวิทยา</p>
+      <div class="pdf-grid" style="grid-template-columns:1fr">
+        <a href="#" class="pdf-btn" onclick="return false">
+          <div class="pdf-icon blue">📘</div>
+          <div>ระเบียบสภานักเรียน โรงเรียนเสริมขวาวิทยา<span class="pdf-meta">คลิกเพื่อดาวน์โหลด PDF</span></div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Activity Gallery -->
+  <div class="card">
+    <div class="card-head">📸 แกลเลอรีกิจกรรมสภานักเรียน</div>
+    <div class="card-body">
+      <div class="gallery-grid">
+        <div class="g-item"><div class="g-placeholder"><div class="g-ico">📷</div><span>กิจกรรม ม.ค. 68</span></div><div class="g-overlay"><div class="g-label">กิจกรรมวันเด็กแห่งชาติ</div></div></div>
+        <div class="g-item"><div class="g-placeholder"><div class="g-ico">📷</div><span>กิจกรรม ก.พ. 68</span></div><div class="g-overlay"><div class="g-label">โครงการต้านยาเสพติด</div></div></div>
+        <div class="g-item"><div class="g-placeholder"><div class="g-ico">🎬</div><span>วิดีโอ มี.ค. 68</span></div><div class="g-vid-badge">▶ VIDEO</div><div class="g-overlay"><div class="g-label">กีฬาสีประจำปี</div></div></div>
+        <div class="g-item"><div class="g-placeholder"><div class="g-ico">📷</div><span>กิจกรรม เม.ย. 68</span></div><div class="g-overlay"><div class="g-label">วันสงกรานต์</div></div></div>
+        <div class="g-item"><img src="https://i.postimg.cc/DwyHF2gH/8da9310a-f031-4f4c-b248-3ab1e5fbdaaf.jpg" alt="เปิดภาคเรียน 1/2568"><div class="g-overlay"><div class="g-label">เปิดภาคเรียน 1/2568</div></div></div>
+        <div class="g-item"><div class="g-placeholder"><div class="g-ico">🎬</div><span>วิดีโอ มิ.ย. 68</span></div><div class="g-vid-badge">▶ VIDEO</div><div class="g-overlay"><div class="g-label">โครงการสภานักเรียน</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PAGE 4: สถานศึกษาสีขาว ========== -->
+<div class="page" id="p4">
+  <div class="pg-header">
+    <div class="pg-header-icon">⚪</div>
+    <div class="pg-header-text">
+      <h2>สถานศึกษาสีขาว</h2>
+      <p>ระบบ E-Filing เพื่อการประเมินสถานศึกษาสีขาวปลอดยาเสพติดและอบายมุข ระดับเพชร ปี 1</p>
+    </div>
+  </div>
+
+  <!-- Report Banner -->
+  <div class="report-banner">
+    <h3>🚨 ตู้แดง เสมารักษ์ออนไลน์</h3>
+    <p>แจ้งเบาะแสการกระทำผิดระเบียบ ยาเสพติด และพฤติกรรมเสี่ยงของนักเรียน<br>ระบบเก็บข้อมูลเป็นความลับอย่างเด็ดขาด ไม่เปิดเผยตัวผู้แจ้ง</p>
+    <a href="https://forms.gle/Q17G5XTzHiKuLmWE6" class="btn-report" target="_blank">🚨 แจ้งเบาะแสได้เลย (ปลอดภัย 100%)</a>
+  </div>
+
+  <!-- E-Filing Dashboard -->
+  <div class="dash-label">
+    <h3>📁 แดชบอร์ด E-Filing เอกสารการประเมิน</h3>
+    <span class="badge badge-yellow">ระดับเพชร ปี 1</span>
+  </div>
+
+  <!-- Group 1 -->
+  <div class="efiling-group">
+    <div class="ef-head g1">
+      <div class="ef-ico">📋</div>
+      <div class="ef-title"><h4>กลุ่มที่ 1 : เอกสารส่วนนำและแบบฟอร์ม</h4><p>ใบสมัคร คำรับรอง สรุปผล ม.2 และ ม.3</p></div>
+    </div>
+    <div class="ef-body">
+      <a href="#" class="ef-item" onclick="return false"><div class="ef-item-ico ic1">📄</div><div class="ef-item-txt"><strong>ใบสมัครเข้าร่วมโครงการสถานศึกษาสีขาว</strong><span>เอกสารส่วนนำ • Google Drive</span></div><span class="ef-arr">→</span></a>
+      <a href="#" class="ef-item" onclick="return false"><div class="ef-item-ico ic1">📝</div><div class="ef-item-txt"><strong>คำรับรองการเข้าร่วมโครงการ</strong><span>เอกสารส่วนนำ • Google Drive</span></div><span class="ef-arr">→</span></a>
+      <a href="#" class="ef-item" onclick="return false"><div class="ef-item-ico ic1">📊</div><div class="ef-item-txt"><strong>แบบสรุปผลการประเมิน ม.2 (ฉบับโรงเรียน)</strong><span>แบบฟอร์มสรุป • Google Drive</span></div><span class="ef-arr">→</span></a>
+      <a href="#" class="ef-item" onclick="return false"><div class="ef-item-ico ic1">📊</div><div class="ef-item-txt"><strong>แบบสรุปผลการประเมิน ม.3 (ฉบับเขตพื้นที่)</strong><span>แบบฟอร์มสรุป • Google Drive</span></div><span class="ef-arr">→</span></a>
+    </div>
+  </div>
+
+  <!-- Group 2 -->
+  <div class="efiling-group">
+    <div class="ef-head g2">
+      <div class="ef-ico">📌</div>
+      <div class="ef-title"><h4>กลุ่มที่ 2 : คำสั่งแต่งตั้งคณะกรรมการ</h4><p>คณะกรรมการดำเนินงาน บำบัดรักษา คลินิกเสมารักษ์</p></div>
+    </div>
+    <div class="ef-body">
+      <a href="#" class="ef-item" onclick="return false"><div class="ef-item-ico ic2">📌</div><div class="ef-item-txt"><strong>คำสั่งแต่งตั้งคณะกรรมการดำเนินงาน</strong><span>คำสั่งโรงเรียน • Google Drive</span></div><span class="ef-arr">→</span></a>
+      <a href="#" class="ef-item" onclick="return false"><div class="ef-item-ico ic2">📌</div><div class="ef-item-txt"><strong>คำสั่งคณะกรรมการบำบัดรักษา</strong><span>คำสั่งโรงเรียน • Google Drive</span></div><span class="ef-arr">→</span></a>
+      <a href="#" class="ef-item" onclick="return false"><div class="ef-item-ico ic2">📌</div><div class="ef-item-txt"><strong>คำสั่งคณะกรรมการคลินิกเสมารักษ์</strong><span>คำสั่งโรงเรียน • Google Drive</span></div><span class="ef-arr">→</span></a>
+      <a href="#" class="ef-item" onclick="return false"><div class="ef-item-ico ic2">📌</div><div class="ef-item-txt"><strong>คำสั่งคณะกรรมการสถานศึกษาสีขาว</strong><span>คำสั่งโรงเรียน • Google Drive</span></div><span class="ef-arr">→</span></a>
+    </div>
+  </div>
+
+  <!-- Group 3 -->
+  <div class="efiling-group">
+    <div class="ef-head g3">
+      <div class="ef-ico">📝</div>
+      <div class="ef-title"><h4>กลุ่มที่ 3 : แบบประเมินและบันทึก</h4><p>SDQ, CATAS, บันทึกการเยี่ยมบ้าน, คลินิกเสมารักษ์</p></div>
+    </div>
+    <div class="ef-body">
+      <a href="#" class="ef-item" onclick="return false"><div class="ef-item-ico ic3">📋</div><div class="ef-item-txt"><strong>แบบประเมิน SDQ (Strengths and Difficulties Questionnaire)</strong><span>แบบประเมิน • Google Drive</span></div><span class="ef-arr">→</span></a>
+      <a href="#" class="ef-item" onclick="return false"><div class="ef-item-ico ic3">📋</div><div class="ef-item-txt"><strong>แบบประเมิน CATAS (ความเสี่ยงยาเสพติด)</strong><span>แบบประเมิน • Google Drive</span></div><span class="ef-arr">→</span></a>
+      <a href="#" class="ef-item" onclick="return false"><div class="ef-item-ico ic3">🏠</div><div class="ef-item-txt"><strong>บันทึกการเยี่ยมบ้านนักเรียน</strong><span>บันทึก • Google Drive</span></div><span class="ef-arr">→</span></a>
+      <a href="#" class="ef-item" onclick="return false"><div class="ef-item-ico ic3">🏥</div><div class="ef-item-txt"><strong>บันทึกงานคลินิกเสมารักษ์</strong><span>บันทึก • Google Drive</span></div><span class="ef-arr">→</span></a>
+      <a href="#" class="ef-item" onclick="return false"><div class="ef-item-ico ic3">📈</div><div class="ef-item-txt"><strong>แบบบันทึกกำกับติดตามและประเมินผล</strong><span>บันทึกติดตาม • Google Drive</span></div><span class="ef-arr">→</span></a>
+    </div>
+  </div>
+
+  <!-- Group 4 -->
+  <div class="efiling-group">
+    <div class="ef-head g4">
+      <div class="ef-ico">🤝</div>
+      <div class="ef-title"><h4>กลุ่มที่ 4 : เครือข่ายและ MOU</h4><p>บันทึกข้อตกลง 5 ภาคี และโรงเรียนเครือข่าย 4 แห่ง</p></div>
+    </div>
+    <div class="ef-body">
+      <a href="#" class="ef-item" onclick="return false"><div class="ef-item-ico ic4">🤝</div><div class="ef-item-txt"><strong>บันทึกข้อตกลง MOU 5 ภาคี</strong><span>ความร่วมมือ • Google Drive</span></div><span class="ef-arr">→</span></a>
+      <a href="#" class="ef-item" onclick="return false"><div class="ef-item-ico ic4">🏫</div><div class="ef-item-txt"><strong>MOU โรงเรียนเครือข่าย แห่งที่ 1</strong><span>โรงเรียนเครือข่าย • Google Drive</span></div><span class="ef-arr">→</span></a>
+      <a href="#" class="ef-item" onclick="return false"><div class="ef-item-ico ic4">🏫</div><div class="ef-item-txt"><strong>MOU โรงเรียนเครือข่าย แห่งที่ 2</strong><span>โรงเรียนเครือข่าย • Google Drive</span></div><span class="ef-arr">→</span></a>
+      <a href="#" class="ef-item" onclick="return false"><div class="ef-item-ico ic4">🏫</div><div class="ef-item-txt"><strong>MOU โรงเรียนเครือข่าย แห่งที่ 3</strong><span>โรงเรียนเครือข่าย • Google Drive</span></div><span class="ef-arr">→</span></a>
+      <a href="#" class="ef-item" onclick="return false"><div class="ef-item-ico ic4">🏫</div><div class="ef-item-txt"><strong>MOU โรงเรียนเครือข่าย แห่งที่ 4</strong><span>โรงเรียนเครือข่าย • Google Drive</span></div><span class="ef-arr">→</span></a>
+      <a href="#" class="ef-item" onclick="return false"><div class="ef-item-ico ic4">📸</div><div class="ef-item-txt"><strong>ภาพกิจกรรมแลกเปลี่ยนเรียนรู้กับเครือข่าย</strong><span>ภาพกิจกรรม • Google Drive</span></div><span class="ef-arr">→</span></a>
+    </div>
+  </div>
+
+  <!-- Group 5 -->
+  <div class="efiling-group">
+    <div class="ef-head g5">
+      <div class="ef-ico">💡</div>
+      <div class="ef-title"><h4>กลุ่มที่ 5 : นวัตกรรมและ Best Practice</h4><p>VAPE STOP MODEL โครงงานปลอดบุหรี่ และศูนย์เรียนรู้</p></div>
+    </div>
+    <div class="ef-body">
+      <a href="#" class="ef-item" onclick="return false"><div class="ef-item-ico ic5">💡</div><div class="ef-item-txt"><strong>เอกสาร VAPE STOP MODEL</strong><span>นวัตกรรม Best Practice • Google Drive</span></div><span class="ef-arr">→</span></a>
+      <a href="#" class="ef-item" onclick="return false"><div class="ef-item-ico ic5">🔬</div><div class="ef-item-txt"><strong>โครงงานโรงเรียนปลอดบุหรี่</strong><span>โครงงานนักเรียน • Google Drive</span></div><span class="ef-arr">→</span></a>
+      <a href="#" class="ef-item" onclick="return false"><div class="ef-item-ico ic5">🏛️</div><div class="ef-item-txt"><strong>ศูนย์เรียนรู้สถานศึกษาสีขาว</strong><span>ศูนย์เรียนรู้ • Google Drive</span></div><span class="ef-arr">→</span></a>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PAGE 5: บันทึกพฤติกรรมนักเรียน ========== -->
+<div class="page" id="p5">
+  <div class="pg-header">
+    <div class="pg-header-icon">📝</div>
+    <div class="pg-header-text">
+      <h2>แบบบันทึกพฤติกรรมนักเรียน</h2>
+      <p>บันทึกพฤติกรรม จัดอันดับนักเรียน และติดตามรายการบันทึกล่าสุดแบบนิรนาม</p>
+    </div>
+  </div>
+
+  <!-- Google Form Button -->
+  <div class="form-btn-banner">
+    <div style="position:relative;z-index:1">
+      <h3>📝 บันทึกพฤติกรรมนักเรียน</h3>
+      <p>กรอกแบบบันทึกผ่าน Google Form — ข้อมูลจะปรากฏในรายการล่าสุดโดยอัตโนมัติ</p>
+      <a id="formLink" href="https://forms.gle/m4qwAVvcWiv8xEY69" class="btn-form" target="_blank">
+        📝 คลิกบันทึกพฤติกรรม
+      </a>
+    </div>
+  </div>
+
+  <!-- Top 3 Leaderboard -->
+  <div class="card">
+    <div class="card-head">🏆 อันดับนักเรียนพฤติกรรมดี ประจำปีการศึกษา 2568</div>
+    <div class="card-body">
+      <div class="config-tip">
+        💡 อันดับ 1–3 ดึงข้อมูลอัตโนมัติจาก Google Sheets — ตั้งค่า <code>SHEET_CONFIG</code> ในโค้ด JavaScript ท้ายไฟล์
+        <br>ตั้ง <code>colName</code>, <code>colClass</code>, <code>colScore</code> ให้ตรงกับหมายเลขคอลัมน์ใน Google Form ของคุณ (นับจาก 0)
+      </div>
+      <div class="sheet-refresh">
+        <span style="font-size:.78rem;color:var(--gray-400)">รวมคะแนนรายนักเรียนจาก Google Sheets</span>
+        <button class="btn-refresh" onclick="fetchLeaderboard()">🔄 รีเฟรช</button>
+      </div>
+      <div class="podium-wrap" id="podiumWrap">
+        <div class="feed-loading">⏳ กำลังโหลด...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Records Feed -->
+  <div class="card">
+    <div class="card-head">
+      🕐 รายการบันทึกล่าสุด
+      <span class="badge badge-yellow" style="margin-left:auto">ไม่แสดงชื่อ</span>
+    </div>
+    <div class="card-body">
+      <div class="config-tip">
+        💡 เชื่อมต่อ Google Sheets โดยตั้งค่า <code>SHEET_CONFIG.id</code> = Spreadsheet ID ของคุณ
+        <br>⚠️ ต้องเปิดสาธารณะก่อน: Share → Anyone with the link → <strong>Viewer</strong>
+      </div>
+      <div class="sheet-refresh">
+        <span style="font-size:.78rem;color:var(--gray-400)">แสดงรายการล่าสุด (ไม่เปิดเผยชื่อ)</span>
+        <button class="btn-refresh" onclick="fetchBehaviorFeed()">🔄 รีเฟรช</button>
+      </div>
+      <div id="behaviorFeed">
+        <div class="feed-loading">⏳ กำลังโหลดข้อมูล...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</main>
+</div>
+
+<script>
+// ================================================================
+// ⚙️  ตั้งค่าหมวดบันทึกพฤติกรรม — แก้ไขได้ที่นี่
+// ================================================================
+
+// 🔗 ลิงก์ Google Form  (วาง URL จริงแทน '#')
+const FORM_URL = 'https://forms.gle/m4qwAVvcWiv8xEY69';
+
+// 📊 Google Sheets Config
+//    id          : Spreadsheet ID (จาก URL ของ Sheets)
+//    sheet       : ชื่อชีท (ค่าเริ่มต้น 'Sheet1')
+//    colDate     : index คอลัมน์ วันที่/เวลา  (Timestamp ของ Google Form อยู่คอลัมน์ 0)
+//    colName     : index คอลัมน์ ชื่อ-นามสกุล นักเรียน
+//    colSurname  : index คอลัมน์ นามสกุล  (-1 = รวมอยู่ใน colName แล้ว)
+//    colClass    : index คอลัมน์ ชั้น/ห้อง
+//    colBehavior : index คอลัมน์ พฤติกรรม
+//    colScore    : index คอลัมน์ คะแนน (บวก = ดี, ลบ = ถูกหัก)
+//    maxRows     : จำนวนรายการล่าสุดที่แสดงในฟีด
+const SHEET_CONFIG = {
+  id:          '',
+  sheet:       'Sheet1',
+  colDate:     0,
+  colName:     1,
+  colSurname:  -1,
+  colClass:    2,
+  colBehavior: 3,
+  colScore:    4,
+  maxRows:     10,
+};
+
+// ================================================================
+
+// ── Navigation ──────────────────────────────────────────────────
+const navItems = document.querySelectorAll('.nav-item[data-page]');
+const pages    = document.querySelectorAll('.page');
+
+function showPage(id) {
+  pages.forEach(p => p.classList.remove('active'));
+  navItems.forEach(n => n.classList.remove('active'));
+  const pg = document.getElementById(id);
+  if (pg) pg.classList.add('active');
+  navItems.forEach(n => { if (n.dataset.page === id) n.classList.add('active'); });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (id === 'p5') { fetchLeaderboard(); fetchBehaviorFeed(); }
+}
+
+navItems.forEach(item => {
+  item.addEventListener('click', () => {
+    showPage(item.dataset.page);
+    if (window.innerWidth <= 768) closeSidebar();
+  });
+});
+
+
+// ── Tabs ────────────────────────────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const wrap = btn.closest('.tabs-wrap');
+    wrap.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    wrap.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    const pane = document.getElementById(btn.dataset.tab);
+    if (pane) pane.classList.add('active');
+  });
+});
+
+// ── Mobile Sidebar ───────────────────────────────────────────────
+const sidebar    = document.getElementById('sidebar');
+const overlay    = document.getElementById('overlay');
+const menuToggle = document.getElementById('menuToggle');
+
+function openSidebar()  { sidebar.classList.add('open');    overlay.classList.add('show');  }
+function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('show'); }
+
+menuToggle.addEventListener('click', () => sidebar.classList.contains('open') ? closeSidebar() : openSidebar());
+overlay.addEventListener('click', closeSidebar);
+window.addEventListener('resize', () => { if (window.innerWidth > 768) closeSidebar(); });
+
+// ── Google Form Link ─────────────────────────────────────────────
+(function() {
+  const link = document.getElementById('formLink');
+  if (!link) return;
+  if (FORM_URL && FORM_URL !== '#') {
+    link.href = FORM_URL;
+  } else {
+    link.addEventListener('click', e => e.preventDefault());
+  }
+})();
+
+// ── Leaderboard (auto-fetch from Google Sheets) ──────────────────
+async function fetchLeaderboard() {
+  const wrap = document.getElementById('podiumWrap');
+  if (!wrap) return;
+
+  if (!SHEET_CONFIG.id) {
+    wrap.innerHTML = `
+      <div class="feed-empty">
+        <span class="ei">📊</span>
+        ยังไม่ได้เชื่อมต่อ Google Sheets<br>
+        <span style="font-size:.75rem;color:var(--gray-400)">
+          ใส่ค่า <strong>SHEET_CONFIG.id</strong> ในโค้ด JavaScript ท้ายไฟล์
+        </span>
+      </div>`;
+    return;
+  }
+
+  wrap.innerHTML = '<div class="feed-loading">⏳ กำลังโหลดอันดับ...</div>';
+
+  try {
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_CONFIG.id}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_CONFIG.sheet)}`;
+    const res  = await fetch(url);
+    const text = await res.text();
+    const json = JSON.parse(text.slice(47, -2));
+    const allRows = json.table.rows.filter(r => r.c && r.c.some(c => c));
+
+    // รวมคะแนนต่อนักเรียน
+    const studentMap = new Map();
+    allRows.forEach(row => {
+      const nameRaw    = SHEET_CONFIG.colName    >= 0 ? (row.c[SHEET_CONFIG.colName]?.v    ?? '') : '';
+      const surnameRaw = SHEET_CONFIG.colSurname >= 0 ? (row.c[SHEET_CONFIG.colSurname]?.v ?? '') : '';
+      const classRaw   = SHEET_CONFIG.colClass   >= 0 ? (row.c[SHEET_CONFIG.colClass]?.v   ?? '') : '';
+      const scoreRaw   = row.c[SHEET_CONFIG.colScore]?.v;
+      const score      = scoreRaw != null ? Number(scoreRaw) : 0;
+      if (!nameRaw) return;
+      const fullName = surnameRaw ? `${nameRaw} ${surnameRaw}` : String(nameRaw);
+      const key = `${fullName}||${classRaw}`;
+      if (!studentMap.has(key)) {
+        studentMap.set(key, { name: fullName, classRoom: String(classRaw), score: 0 });
+      }
+      studentMap.get(key).score += score;
+    });
+
+    // เรียงจากมากไปน้อย เอาอันดับ 1–3
+    const top3 = [...studentMap.values()].sort((a, b) => b.score - a.score).slice(0, 3);
+
+    if (!top3.length) {
+      wrap.innerHTML = '<div class="feed-empty"><span class="ei">📊</span>ยังไม่มีข้อมูลนักเรียน</div>';
+      return;
+    }
+
+    const medals = { 1: '👑', 2: '🥈', 3: '🥉' };
+    // แสดง: อันดับ 2 ซ้าย, อันดับ 1 กลาง, อันดับ 3 ขวา
+    const displayOrder = top3.length === 3 ? [1, 0, 2] : [...Array(top3.length).keys()];
+    wrap.innerHTML = displayOrder.map(idx => {
+      const s    = top3[idx];
+      const rank = idx + 1;
+      return `
+      <div class="podium-slot rank-${rank}">
+        <div class="podium-card">
+          <div class="podium-photo">👤</div>
+          <div class="podium-info">
+            <span class="podium-crown">${medals[rank]}</span>
+            <div class="podium-rank-badge">${rank}</div>
+            <div class="podium-name">${escHtml(s.name)}</div>
+            <div class="podium-class">${escHtml(s.classRoom)}</div>
+            <div class="podium-score">${s.score} คะแนน</div>
+          </div>
+          <div class="podium-base"></div>
+        </div>
+      </div>`;
+    }).join('');
+
+  } catch (err) {
+    wrap.innerHTML = `
+      <div class="feed-empty">
+        <span class="ei">⚠️</span>
+        โหลดข้อมูลอันดับไม่สำเร็จ<br>
+        <span style="font-size:.75rem;color:var(--gray-400)">
+          ตรวจสอบว่า Google Sheets เปิดสาธารณะแล้ว (Anyone with the link → Viewer)
+        </span>
+      </div>`;
+  }
+}
+
+// ── Behavior Feed (Google Sheets) ─────────────────────────────────
+async function fetchBehaviorFeed() {
+  const feed = document.getElementById('behaviorFeed');
+  if (!feed) return;
+
+  if (!SHEET_CONFIG.id) {
+    feed.innerHTML = `
+      <div class="feed-empty">
+        <span class="ei">📊</span>
+        ยังไม่ได้เชื่อมต่อ Google Sheets<br>
+        <span style="font-size:.75rem;color:var(--gray-400)">
+          ใส่ค่า <strong>SHEET_CONFIG.id</strong> ในโค้ด JavaScript ท้ายไฟล์
+        </span>
+      </div>`;
+    return;
+  }
+
+  feed.innerHTML = '<div class="feed-loading">⏳ กำลังโหลดข้อมูล...</div>';
+
+  try {
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_CONFIG.id}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_CONFIG.sheet)}`;
+    const res  = await fetch(url);
+    const text = await res.text();
+    // Strip JSONP wrapper: google.visualization.Query.setResponse({...});
+    const json = JSON.parse(text.slice(47, -2));
+    const allRows = json.table.rows.filter(r => r.c && r.c.some(c => c));
+    const rows = allRows.slice(-SHEET_CONFIG.maxRows).reverse();
+
+    if (!rows.length) {
+      feed.innerHTML = `<div class="feed-empty"><span class="ei">📭</span>ยังไม่มีรายการบันทึก</div>`;
+      return;
+    }
+
+    const items = rows.map(row => {
+      const behavior = row.c[SHEET_CONFIG.colBehavior]?.v ?? '—';
+      const scoreRaw = row.c[SHEET_CONFIG.colScore]?.v;
+      const score    = scoreRaw != null ? Number(scoreRaw) : null;
+      const dateVal  = row.c[SHEET_CONFIG.colDate]?.v ?? '';
+      const timeAgo  = dateVal ? thaiRelativeTime(dateVal) : '';
+      const isPos    = score != null && score > 0;
+      const scoreHtml = score != null
+        ? `<span class="feed-score${isPos ? ' pos' : ''}">${isPos ? '+' : '−'}${Math.abs(score)}</span>`
+        : '';
+      return `
+      <div class="feed-item">
+        <div class="feed-anon">🎭</div>
+        <div class="feed-content">
+          <div class="feed-behavior">${escHtml(String(behavior))}</div>
+          ${timeAgo ? `<div class="feed-meta">🕐 ${timeAgo}</div>` : ''}
+        </div>
+        ${scoreHtml}
+      </div>`;
+    }).join('');
+
+    feed.innerHTML = `<div class="feed-list">${items}</div>`;
+
+  } catch (err) {
+    feed.innerHTML = `
+      <div class="feed-empty">
+        <span class="ei">⚠️</span>
+        โหลดข้อมูลไม่สำเร็จ<br>
+        <span style="font-size:.75rem;color:var(--gray-400)">
+          ตรวจสอบว่า Google Sheets เปิดสาธารณะแล้ว (Anyone with the link → Viewer)
+        </span>
+      </div>`;
+  }
+}
+
+function thaiRelativeTime(val) {
+  let d;
+  if (typeof val === 'string' && val.startsWith('Date(')) {
+    const p = val.slice(5, -1).split(',').map(Number);
+    d = new Date(p[0], p[1], p[2], p[3] || 0, p[4] || 0, p[5] || 0);
+  } else {
+    d = new Date(val);
+  }
+  if (isNaN(d)) return String(val);
+  const diff = Date.now() - d.getTime();
+  const min  = Math.floor(diff / 60000);
+  const hr   = Math.floor(diff / 3600000);
+  const day  = Math.floor(diff / 86400000);
+  if (min < 1)  return 'เมื่อกี้';
+  if (min < 60) return `${min} นาทีที่แล้ว`;
+  if (hr  < 24) return `${hr} ชั่วโมงที่แล้ว`;
+  return `${day} วันที่แล้ว`;
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+</script>
+</body>
+</html>
