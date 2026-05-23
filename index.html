@@ -26,7 +26,8 @@ body{font-family:'Sarabun',sans-serif;background:var(--gray-50);color:var(--gray
 
 /* HEADER */
 .header{background:linear-gradient(135deg,var(--primary-dark) 0%,var(--primary) 55%,var(--primary-light) 100%);height:var(--header-h);display:flex;align-items:center;padding:0 18px;position:fixed;top:0;left:0;right:0;z-index:1000;box-shadow:0 2px 20px rgba(127,29,29,.45);gap:12px}
-.header-logo{width:46px;height:46px;background:rgba(255,255,255,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;border:2px solid rgba(255,255,255,.3)}
+.header-logo{width:46px;height:46px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;border:2px solid rgba(255,255,255,.3);overflow:hidden;padding:2px}
+.header-logo img{width:100%;height:100%;object-fit:contain;border-radius:50%}
 .header-title{flex:1;min-width:0}
 .header-title h1{color:#fff;font-size:.95rem;font-weight:700;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .header-title p{color:rgba(255,255,255,.72);font-size:.72rem}
@@ -312,7 +313,7 @@ body{font-family:'Sarabun',sans-serif;background:var(--gray-50);color:var(--gray
 <!-- HEADER -->
 <header class="header">
   <button class="menu-toggle" id="menuToggle">☰</button>
-  <div class="header-logo">🏫</div>
+  <div class="header-logo"><img src="https://i.postimg.cc/gknXXhNQ/tras-yl-ks'n-sphth-sphth-3-D-mi-m-khxb-1024x1024.png" alt="ตราสพฐ."></div>
   <div class="header-title">
     <h1>ระบบงานกิจการนักเรียน โรงเรียนเสริมขวาวิทยา</h1>
     <p>สำนักงานเขตพื้นที่การศึกษาประถมศึกษาลำปาง เขต 2</p>
@@ -346,8 +347,8 @@ body{font-family:'Sarabun',sans-serif;background:var(--gray-50);color:var(--gray
   <div class="sidebar-div"></div>
   <div class="sidebar-sec">
     <div class="sidebar-sec-title">ลิงก์ด่วน</div>
-    <button class="nav-item" onclick="window.open('#','_blank')">
-      <span class="n-icon">📊</span>Google Classroom
+    <button class="nav-item" onclick="window.open('https://forms.gle/kbcNCATcdqTY8GJE8','_blank')">
+      <span class="n-icon">📊</span>ตู้เเดงเสมารักษ์ออนไลน์
     </button>
     <button class="nav-item" onclick="window.open('#','_blank')">
       <span class="n-icon">📁</span>Google Drive
@@ -635,7 +636,7 @@ body{font-family:'Sarabun',sans-serif;background:var(--gray-50);color:var(--gray
     <div class="pg-header-icon">⚪</div>
     <div class="pg-header-text">
       <h2>สถานศึกษาสีขาว</h2>
-      <p>ระบบ E-Filing เพื่อการประเมินสถานศึกษาสีขาวปลอดยาเสพติดและอบายมุข ระดับเพชร ปี 1</p>
+      <p>ระบบ E-Filing เพื่อการประเมินสถานศึกษาสีขาวปลอดยาเสพติดและอบายมุข </p>
     </div>
   </div>
 
@@ -643,13 +644,13 @@ body{font-family:'Sarabun',sans-serif;background:var(--gray-50);color:var(--gray
   <div class="report-banner">
     <h3>🚨 ตู้แดง เสมารักษ์ออนไลน์</h3>
     <p>แจ้งเบาะแสการกระทำผิดระเบียบ ยาเสพติด และพฤติกรรมเสี่ยงของนักเรียน<br>ระบบเก็บข้อมูลเป็นความลับอย่างเด็ดขาด ไม่เปิดเผยตัวผู้แจ้ง</p>
-    <a href="https://forms.gle/Q17G5XTzHiKuLmWE6" class="btn-report" target="_blank">🚨 แจ้งเบาะแสได้เลย (ปลอดภัย 100%)</a>
+    <a href="https://forms.gle/kbcNCATcdqTY8GJE8" class="btn-report" target="_blank">🚨 แจ้งเบาะแสได้เลย (ปลอดภัย 100%)</a>
   </div>
 
   <!-- E-Filing Dashboard -->
   <div class="dash-label">
     <h3>📁 แดชบอร์ด E-Filing เอกสารการประเมิน</h3>
-    <span class="badge badge-yellow">ระดับเพชร ปี 1</span>
+    <span class="badge badge-yellow"></span>
   </div>
 
   <!-- Group 1 -->
@@ -809,14 +810,15 @@ const FORM_URL = 'https://forms.gle/m4qwAVvcWiv8xEY69';
 //    colScore    : index คอลัมน์ คะแนน (บวก = ดี, ลบ = ถูกหัก)
 //    maxRows     : จำนวนรายการล่าสุดที่แสดงในฟีด
 const SHEET_CONFIG = {
-  id:          '',
-  sheet:       'Sheet1',
-  colDate:     0,
+  id:          '1dFl0SNZ6WZyERyC2zNPdQLYoLUKYU6zWF7Rt8ZxJkP8',
+  pubId:       '2PACX-1vSzMiLsUWTeKW8SP8mJEsifYQ3IS1w1nK2NXq3rn4-MkjqDSqGdt3yuAUpopVRv3lzDylX0xcILwBaC',
+  gid:         0,
+  sheet:       'ชีต1',
   colName:     1,
-  colSurname:  -1,
-  colClass:    2,
-  colBehavior: 3,
-  colScore:    4,
+  colSurname:  2,
+  colClass:    -1,
+  colBehavior: -1,
+  colScore:    3,
   maxRows:     10,
 };
 
@@ -879,18 +881,32 @@ window.addEventListener('resize', () => { if (window.innerWidth > 768) closeSide
   }
 })();
 
+// ── CSV parser ───────────────────────────────────────────────────
+function parseCSV(text) {
+  return text.split('\n').map(line => {
+    const cols = []; let cur = '', inQ = false;
+    for (const c of line) {
+      if (c === '"') inQ = !inQ;
+      else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+      else cur += c;
+    }
+    cols.push(cur.trim());
+    return cols;
+  });
+}
+
 // ── Leaderboard (auto-fetch from Google Sheets) ──────────────────
 async function fetchLeaderboard() {
   const wrap = document.getElementById('podiumWrap');
   if (!wrap) return;
 
-  if (!SHEET_CONFIG.id) {
+  if (!SHEET_CONFIG.pubId) {
     wrap.innerHTML = `
       <div class="feed-empty">
         <span class="ei">📊</span>
         ยังไม่ได้เชื่อมต่อ Google Sheets<br>
         <span style="font-size:.75rem;color:var(--gray-400)">
-          ใส่ค่า <strong>SHEET_CONFIG.id</strong> ในโค้ด JavaScript ท้ายไฟล์
+          ใส่ค่า <strong>SHEET_CONFIG.pubId</strong> ในโค้ด JavaScript ท้ายไฟล์
         </span>
       </div>`;
     return;
@@ -899,25 +915,23 @@ async function fetchLeaderboard() {
   wrap.innerHTML = '<div class="feed-loading">⏳ กำลังโหลดอันดับ...</div>';
 
   try {
-    const url = `https://docs.google.com/spreadsheets/d/${SHEET_CONFIG.id}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_CONFIG.sheet)}`;
+    const url = `https://docs.google.com/spreadsheets/d/e/${SHEET_CONFIG.pubId}/pub?gid=${SHEET_CONFIG.gid}&single=true&output=csv`;
     const res  = await fetch(url);
     const text = await res.text();
-    const json = JSON.parse(text.slice(47, -2));
-    const allRows = json.table.rows.filter(r => r.c && r.c.some(c => c));
+    const rows = parseCSV(text);
 
-    // รวมคะแนนต่อนักเรียน
+    // รวมคะแนนต่อนักเรียน (ข้ามแถวหัวตารางและหัวหมวด)
     const studentMap = new Map();
-    allRows.forEach(row => {
-      const nameRaw    = SHEET_CONFIG.colName    >= 0 ? (row.c[SHEET_CONFIG.colName]?.v    ?? '') : '';
-      const surnameRaw = SHEET_CONFIG.colSurname >= 0 ? (row.c[SHEET_CONFIG.colSurname]?.v ?? '') : '';
-      const classRaw   = SHEET_CONFIG.colClass   >= 0 ? (row.c[SHEET_CONFIG.colClass]?.v   ?? '') : '';
-      const scoreRaw   = row.c[SHEET_CONFIG.colScore]?.v;
-      const score      = scoreRaw != null ? Number(scoreRaw) : 0;
-      if (!nameRaw) return;
-      const fullName = surnameRaw ? `${nameRaw} ${surnameRaw}` : String(nameRaw);
+    rows.forEach(cols => {
+      const nameRaw    = SHEET_CONFIG.colName    >= 0 ? (cols[SHEET_CONFIG.colName]    || '') : '';
+      const surnameRaw = SHEET_CONFIG.colSurname >= 0 ? (cols[SHEET_CONFIG.colSurname] || '') : '';
+      const classRaw   = SHEET_CONFIG.colClass   >= 0 ? (cols[SHEET_CONFIG.colClass]   || '') : '';
+      const score      = SHEET_CONFIG.colScore   >= 0 ? parseFloat(cols[SHEET_CONFIG.colScore]) : NaN;
+      if (!nameRaw || isNaN(score)) return;
+      const fullName = surnameRaw ? `${nameRaw} ${surnameRaw}` : nameRaw;
       const key = `${fullName}||${classRaw}`;
       if (!studentMap.has(key)) {
-        studentMap.set(key, { name: fullName, classRoom: String(classRaw), score: 0 });
+        studentMap.set(key, { name: fullName, classRoom: classRaw, score: 0 });
       }
       studentMap.get(key).score += score;
     });
@@ -958,7 +972,7 @@ async function fetchLeaderboard() {
         <span class="ei">⚠️</span>
         โหลดข้อมูลอันดับไม่สำเร็จ<br>
         <span style="font-size:.75rem;color:var(--gray-400)">
-          ตรวจสอบว่า Google Sheets เปิดสาธารณะแล้ว (Anyone with the link → Viewer)
+          ${escHtml(String(err))}
         </span>
       </div>`;
   }
